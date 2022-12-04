@@ -16,11 +16,14 @@ public class ChatServer {
             DataInputStream in = new DataInputStream(socket.getInputStream());
 
             while(true) {
-                String message = in.readUTF();
+                byte[] buffer = new byte[1024];
+                int bytesRead = in.read(buffer);
+                String message = new String(buffer, 0, bytesRead);
                 System.out.println("Client: " + message);
                 System.out.print("Server: ");
                 String response = scanner.nextLine();
-                out.writeUTF(response);
+                buffer = response.getBytes();
+                out.write(buffer);
             }
         } catch (Exception e) {
             System.out.println(e);

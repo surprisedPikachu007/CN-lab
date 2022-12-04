@@ -17,8 +17,11 @@ public class ChatClient {
             while(true) {
                 System.out.print("Client: ");
                 String message = scanner.nextLine();
-                out.writeUTF(message);
-                String response = in.readUTF();
+                byte[] buffer = message.getBytes();
+                out.write(buffer);
+                buffer = new byte[1024];
+                int bytesRead = in.read(buffer);
+                String response = new String(buffer, 0, bytesRead);
                 System.out.println("Server: " + response);
             }
         } catch (Exception e) {
